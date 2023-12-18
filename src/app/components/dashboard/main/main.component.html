@@ -1,0 +1,37 @@
+<div class="contentArea">
+  <ul class="nav nav-tabs DashboardTab" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button [ngClass]="{'active' : currentTab === 'screener'}" class="nav-link" type="button"
+        (click)="setTab('screener')" aria-selected="true">Screener</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button [ngClass]="{'active' : currentTab === 'trade'}" class="nav-link" type="button"
+        (click)="setTab('trade')" aria-selected="true">Trade</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button [ngClass]="{'active' : currentTab === 'watchlist'}" class="nav-link" type="button"
+        (click)="setTab('watchlist')" aria-selected="true">Watchlist</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button [ngClass]="{'active' : currentTab === 'backOffice'}" class="nav-link" type="button"
+        (click)="setTab('backOffice')" aria-selected="true">Back Office</button>
+    </li>
+  </ul>
+  <div class="tab-content DashboardTabContent" id="myTabContent">
+    <!-- Screener Content -->
+    <div *ngIf="currentTab === 'screener'">
+      <ow-main-screener-tab (redirectToSubTab)="redirectToSubTab($event)"></ow-main-screener-tab>
+    </div>
+    <!-- Trade Content -->
+    <div *ngIf="currentTab === 'trade'">
+      <ow-main-trade-tab [currentTab]="currentSubTab"></ow-main-trade-tab>
+    </div>
+    <!-- Watchlist Content -->
+    <div *ngIf="currentTab === 'watchlist'">
+      <ow-main-watchlist-tab></ow-main-watchlist-tab>
+    </div>
+    <div *ngIf="currentTab === 'backOffice'">
+      <ow-main-backOffice-tab></ow-main-backOffice-tab>
+    </div>
+  </div>
+</div>

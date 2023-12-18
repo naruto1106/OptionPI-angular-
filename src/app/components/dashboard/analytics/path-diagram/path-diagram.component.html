@@ -1,0 +1,285 @@
+<div class="tab-pane fade show active PathDiagram" id="PathDiagram" role="tabpanel" aria-labelledby="PathDiagram-tab">
+  <div class="PathDiagramMain SideBarContain">
+    <!-- Path Diagram Lft -->
+    <div class="PathDiagramLft  SideBarLft" [ngClass]="{'Addwidth' : !isCollapsed}">
+      <!-- Path Diagram Sub Lft -->
+      <div class="PathDiagramSubLft">
+        <div class="PathDiagramSubTop">
+          <h3>Path Diagram</h3>
+        </div>
+
+        <ng-container *ngIf="isLoadingPathDiagramChart">
+          <div class="PayoffLftBtm">
+            <div class="configure">
+              <img src="//am708403.blob.core.windows.net/images/optionpi/img/settings.png">
+              <h2>Please configure the parameter </h2>
+              <p>Please configure the parameter and select the value to show the graph</p>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="!isLoadingPathDiagramChart">
+          <div class="PathDiagramSubBtm">
+            <highcharts-chart
+              [Highcharts]="Highcharts"
+              [options]="pathDiagramChartOptions"
+              [(update)]="pathDiagramChartUpdateFlag"
+              style="width: 100%; height: 600px; display: block; padding-top: 20px;"
+            ></highcharts-chart>
+          </div>
+        </ng-container>
+      </div>
+      <!-- Path Diagram Sub Rgt -->
+      <div class="PathDiagramSubRgt">
+        <a class="BtnSecondary w-100" (click)="addNewFormData()"><i class="bi bi-plus-circle"></i> Add New</a>
+        <form class="w-100 SideBarForm">
+
+          <div class="PathDiagramSubBlock" *ngFor="let addNewForm of addNewFormArray; let addNewFormIndex = index;">
+            <a *ngIf="addNewFormIndex > 0" (click)="removeNewFormData(addNewFormIndex)" class="closeBlock"> <i class="bi bi-x-lg"></i> </a>
+            <div class="form-control w-100">
+              <label>Stock Price</label>
+              <div class="PathDiagramInner w-100">
+                <div class="w-25">
+                  <input type="text" style="padding: 10px 7px;"  [(ngModel)]="addNewForm.stockprice.value" name="addNewForm.stockprice.name_{{addNewFormIndex}}" value="{{addNewForm.stockprice.value}}%" class="w-100">
+                </div>
+                <div class="w-75" style="margin-top: -20px;">
+                  <ngx-slider [(value)]="addNewForm.stockprice.value" [options]="addNewForm.stockprice.options"></ngx-slider>
+                  <div class="rangeData">
+                    <span>-100%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-control w-100">
+              <label>IV</label>
+              <div class="PathDiagramInner w-100">
+                <div class="w-25">
+                  <input type="text" style="padding: 10px 7px;" [(ngModel)]="addNewForm.IV.value" name="addNewForm.IV.name_{{addNewFormIndex}}" value="{{addNewForm.IV.value}}%" class="w-100">
+                </div>
+                <div class="w-75" style="margin-top: -20px;">
+                  <ngx-slider [(value)]="addNewForm.IV.value" [options]="addNewForm.IV.options"></ngx-slider>
+                  <div class="rangeData">
+                    <span>0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-control w-100">
+              <label>Day</label>
+              <ngx-slider [(value)]="addNewForm.DayValue.value" [options]="addNewForm.DayValue.options"></ngx-slider>
+              <div class="rangeData">
+                <span>1</span>
+                <span>25</span>
+              </div>
+            </div>
+            <button type="submit" class="BtnDefault w-100" (click)="addNewFormSubmit(addNewFormIndex)">Confirm</button>
+          </div>
+
+          <div style="display: none;" class="PathDiagramSubBlock">
+            <a  class="closeBlock"> <i class="bi bi-x-lg"></i> </a>
+            <div class="form-control w-100">
+              <label>Stock Price</label>
+              <div class="PathDiagramInner w-100">
+                <div class="w-25">
+                  <input type="text" name="stockprice" value="30%" class="w-100">
+                </div>
+                <div class="w-75">
+                  <input class="range-example-input" type="text" min="-100" max="100" value="30" name="points" step="0.01" />
+                  <div class="rangeData">
+                    <span>-100%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-control w-100">
+              <label>IV</label>
+              <div class="PathDiagramInner w-100">
+                <div class="w-25">
+                  <input type="text" name="stockprice" value="30%" class="w-100">
+                </div>
+                <div class="w-75">
+                  <input class="range-example-input" type="text" min="0" max="100" value="30" name="points" step="0.01" />
+                  <div class="rangeData">
+                    <span>0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-control w-100">
+              <label>Day</label>
+              <input class="range-example-input RemovePer" type="text" min="1" max="25" value="20" name="points" step="0.01" />
+              <div class="rangeData">
+                <span>1</span>
+                <span>25</span>
+              </div>
+            </div>
+            <a  class="w-100 BtnDefault">Confirm</a>
+          </div>
+          <div style="display: none;" class="PathDiagramSubBlock">
+            <a  class="closeBlock"> <i class="bi bi-x-lg"></i> </a>
+            <div class="form-control w-100">
+              <label>Stock Price</label>
+              <div class="PathDiagramInner w-100">
+                <div class="w-25">
+                  <input type="text" name="stockprice" value="30%" class="w-100">
+                </div>
+                <div class="w-75">
+                  <input class="range-example-input" type="text" min="-100" max="100" value="30" name="points" step="0.01" />
+                  <div class="rangeData">
+                    <span>-100%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-control w-100">
+              <label>IV</label>
+              <div class="PathDiagramInner w-100">
+                <div class="w-25">
+                  <input type="text" name="stockprice" value="30%" class="w-100">
+                </div>
+                <div class="w-75">
+                  <input class="range-example-input" type="text" min="0" max="100" value="30" name="points" step="0.01" />
+                  <div class="rangeData">
+                    <span>0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-control w-100">
+              <label>Day</label>
+              <input class="range-example-input RemovePer" type="text" min="1" max="25" value="20" name="points" step="0.01" />
+              <div class="rangeData">
+                <span>1</span>
+                <span>25</span>
+              </div>
+            </div>
+            <a  class="w-100 BtnDefault">Confirm</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Path Diagram Rgt -->
+    <div class="PathDiagramRgt SideBarMain collapse" [ngClass]="{'show' : !isCollapsed}">
+      <a  class="close" (click)="toggleCollapsed()"> <i class="bi bi-x-lg"></i> </a>
+      <form class="w-100 SideBarForm" [formGroup]="ConfigForm" (ngSubmit)="confirmConfigChange()">
+          <div class="form-control w-100">
+            <label>Target Variable</label>
+            <div class="select2Style">
+              <select formControlName="SelectedTargetVariable" class="form-select selectMain">
+                <option *ngFor="let targetVariable of TargetVariableList" [ngValue]="targetVariable">
+                  {{ targetVariable.Display }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="SideBarFormSub w-100">
+            <div class="form-control w-50">
+              <label>Strategy</label>
+              <select (change)='onStrategyChanged(ConfigForm.value.SelectedStrategy)'
+              formControlName="SelectedStrategy" class="selectDefault w-100" aria-label="Default select example" >
+                <option *ngFor="let strategy of StrategyList" [ngValue]="strategy">
+                  {{ strategy.Display }}
+                </option>
+              </select>
+            </div>
+            <div class="form-control w-50">
+              <label>Parameter</label>
+              <select formControlName="SelectedParameter" class="form-select selectDefault w-100" aria-label="Default select example">
+                <option *ngFor="let parameter of OptionParameterList" [ngValue]="parameter">
+                  {{ parameter.Display }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-control w-100">
+            <label>Leg 1 distance (new)</label>
+            <ngx-slider formControlName="LegDistanceNew" [options]="LegDistanceNewOptions"></ngx-slider>
+            <div class="rangeData">
+              <span>2.5</span>
+              <span>25</span>
+            </div>
+          </div>
+          <div class="form-control w-100">
+            <label>Leg 2 distance (further)</label>
+            <ngx-slider formControlName="LegDistanceFurther" [options]="LegDistanceFurtherOptions"></ngx-slider>
+            <div class="rangeData">
+              <span>2.5</span>
+              <span>25</span>
+            </div>
+          </div>
+          <div class="form-control w-100">
+            <label>Risk Free Rate</label>
+            <ngx-slider formControlName="RiskFreeRate" [options]="RiskFreeRateOptions"></ngx-slider>
+            <div class="rangeData">
+              <span>0</span>
+              <span>100</span>
+            </div>
+          </div>
+          <div class="form-control w-100">
+            <label>Dividend Yield</label>
+            <ngx-slider formControlName="DividendYield" [options]="DividendYieldOptions"></ngx-slider>
+            <div class="rangeData">
+              <span>0</span>
+              <span>100</span>
+            </div>
+          </div>
+          <div class="form-control w-100">
+            <label>Time to Expiry</label>
+            <ngx-slider formControlName="TimeToExpiry" [options]="TimeToExpiryOptions"></ngx-slider>
+            <div class="rangeData">
+              <span>15</span>
+              <span>90</span>
+            </div>
+          </div>
+          <div class="form-control w-100">
+            <label>IV Skew Rate</label>
+            <ngx-slider formControlName="IVSkewRate" [options]="IVSkewRateOptions"></ngx-slider>
+            <div class="rangeData">
+              <span>0</span>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="form-control w-100">
+            <label>Amount</label>
+            <input type="text" formControlName="Amount" class="w-100">
+          </div>
+          <button type="submit" class="BtnDefault w-100">Confirm</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade "
+  id="myModalDiagram"
+  tabindex="-1"
+  arial-modal="true"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog  modal-xl modal-dialog-centered Analytic">
+    <div class="modal-content ">
+      <!-- <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">PopUp</h5>
+
+      </div> -->
+      <div class="modal-body">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h3 style="text-align:center">Hello! PopUp</h3>
+        <h2 > X: {{ ModalNumberDiagramX }} </h2>
+        <h2 > Y: {{ ModalNumberDiagramY }} </h2>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div> -->
+    </div>
+  </div>
+</div>

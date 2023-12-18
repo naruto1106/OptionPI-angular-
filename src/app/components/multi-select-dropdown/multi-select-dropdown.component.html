@@ -1,0 +1,23 @@
+<div>
+  <div (mouseleave)="showDropDown = false">
+      <button class="drop-toggle btn flat form-select" (click)="showDropDown=!showDropDown">
+          <span *ngIf="checkedList.length==0" style="padding-right: 20px;">Select {{placeHolder}}</span>
+          <!-- <span *ngIf="checkedList.length<=0">Select {{placeHolder}}</span> -->
+          <span *ngIf="checkedList.length>0" style="padding-right: 20px;">Selected {{checkedList.length}}</span>
+      </button>
+      <div class="drop-show" *ngIf="showDropDown">
+            <label *ngFor="let a of list; let i = index;">
+                <div class="left">
+                    <input *ngIf="a.checked !== undefined"
+                        type="checkbox"
+                        [(ngModel)]="a.checked"
+                        name="{{a.name}}"
+                        (change)="getSelectedValue(a.checked,a.name, i)" />
+                </div>
+                <div class="right">
+                    <span>{{a.name}}</span>
+                </div>
+            </label>
+      </div>
+  </div>
+</div>
